@@ -5,6 +5,15 @@ namespace App\Entity;
 use App\Repository\AptitudRepository;
 use Doctrine\ORM\Mapping as ORM;
 
+enum TipoAptitud: int {
+    case TECNOLOGICAS = 0;
+    case HABILIDADES_COMUNICATIVAS = 1;
+    case OFIMATICA = 2;
+    case COMUNICATIVAS = 3;
+}
+
+
+
 #[ORM\Entity(repositoryClass: AptitudRepository::class)]
 #[ORM\Table(name: 'aptitud', schema: 'safajobs')]
 class Aptitud
@@ -14,8 +23,8 @@ class Aptitud
     #[ORM\Column(name: 'id')]
     private ?int $id = null;
 
-    #[ORM\Column(name: 'tipo')]
-    private ?int $tipo = null;
+    #[ORM\Column(name: 'tipo',type: 'integer' ,enumType: TipoAptitud::class)]
+    private ?TipoAptitud $tipo = null;
 
     #[ORM\Column(length: 255)]
     private ?string $titulo = null;
@@ -28,16 +37,14 @@ class Aptitud
         return $this->id;
     }
 
-    public function getTipo(): ?int
+    public function getTipo(): ? string
     {
-        return $this->tipo;
+        return $this->tipo->name;
     }
 
-    public function setTipo(int $tipo): static
+    public function setTipo(?TipoAptitud $tipo): void
     {
         $this->tipo = $tipo;
-
-        return $this;
     }
 
     public function getTitulo(): ?string
